@@ -6,6 +6,35 @@ function getMonthFromString(month: string) {
   return new Date(Date.parse(month + " 1, 2012")).getMonth()
 }
 
+function padData(stocks: Stock[][]) {
+  let maxLength = 0;
+  let maxIndex = NaN;
+  for (let i = 0; i < stocks.length; ++i) {
+    if (maxLength < stocks[i].length) {
+      maxLength = Math.max(maxLength, stocks[i].length)
+      maxIndex = i;
+    }
+  }
+  for (let i = 0; i < stocks.length; ++i) {
+    // @ts-ignore
+    const stockTitle = stocks[i].title
+    const remainingLength = maxLength - stocks[i].length;
+    const padValue = stocks[i][0]
+    const supplement: Stock[] = []
+    for (let i = 0; i < remainingLength; ++i) {
+      const subDate = stocks[maxIndex][i].time
+      const newPad = padValue;
+      newPad.time = subDate;
+      supplement.push(newPad)
+    }
+    const paddedArray = supplement.concat(stocks[i]);
+    // @ts-ignore
+    paddedArray.title = stockTitle
+    stocks[i] = paddedArray
+  }
+  return stocks
+}
+
 @Component({
   selector: 'app-stock-graph',
   templateUrl: './stock-graph.component.html',
@@ -18,25 +47,40 @@ export class StockGraphComponent implements OnInit {
 
   ngOnInit() {
     this.fetchConsumerPriceIndex().then((value) => {
-      this.data = [ ...this.data, value]
+      this.data = padData([...this.data, value])
     })
     this.fetchStockData('MSFT').then((value) => {
-      this.data = [ ...this.data, value]
+      this.data = padData([...this.data, value])
     })
-    console.log(this.data)
+    this.fetchStockData('BRK.A').then((value) => {
+      this.data = padData([...this.data, value])
+    })
+    this.fetchStockData('AMD').then((value) => {
+      this.data = padData([...this.data, value])
+    })
+    this.fetchStockData('NVDA').then((value) => {
+      this.data = padData([...this.data, value])
+    })
+    this.fetchStockData('MCD').then((value) => {
+      this.data = padData([...this.data, value])
+    })
+    this.fetchStockData('BAC').then((value) => {
+      this.data = padData([...this.data, value])
+    })
   }
 
   async fetchConsumerPriceIndex(): Promise<Stock[]> {
     const apiKey = '6f5062dafec142749a92391e389490a5'
-    const fetchedData: string = await makeRequest("GET", `https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0?registrationkey=${apiKey}`)
+    const thisYear = new Date().getFullYear()
+    const fetchedData: string = await makeRequest("GET", `https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0?startyear=2000&endyear=${thisYear}&registrationkey=${apiKey}`)
     const parsedData = JSON.parse(fetchedData)
     const cpiData = parsedData["Results"]["series"][0]['data']
     const stockFormat = cpiData.map((datum: any) => {
       const { value, year, periodName } = datum
-        const date = new Date(year, getMonthFromString(periodName), 1)
-        const price: number = Number.parseFloat(value)
-        const asStock = { time: date, open: price, high: price, low: price, close: price, volume: 1 }
-        return asStock
+      const date = new Date(year, getMonthFromString(periodName), 1)
+      const price: number = Number.parseFloat(value)
+      const asStock = { time: date, open: price, high: price, low: price, close: price, volume: 1 }
+      return asStock
     })
     const sortedStock = stockFormat.sort((a: Stock, b: Stock) => {
       return (a.time > b.time) ? 1 : -1
