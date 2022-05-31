@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { makeRequest, Stock } from './data';
+const alpha = require('alphavantage')({ key: '4DX4PNFZKGWMX4B3' });
 
 function getMonthFromString(month: string) {
   return new Date(Date.parse(month + " 1, 2012")).getMonth()
@@ -11,14 +12,18 @@ function getMonthFromString(month: string) {
   styleUrls: ['./stock-graph.component.scss']
 })
 export class StockGraphComponent implements OnInit {
-  public data: Stock[] = [];
+  public data: Stock[][] = [];
   constructor() {
   }
 
   ngOnInit() {
     this.fetchConsumerPriceIndex().then((value) => {
-      this.data = value
+      this.data = [ ...this.data, value]
     })
+    this.fetchStockData('MSFT').then((value) => {
+      this.data = [ ...this.data, value]
+    })
+    console.log(this.data)
   }
 
   async fetchConsumerPriceIndex(): Promise<Stock[]> {
@@ -34,9 +39,38 @@ export class StockGraphComponent implements OnInit {
         return asStock
     })
     const sortedStock = stockFormat.sort((a: Stock, b: Stock) => {
-      return a.time > b.time
+      return (a.time > b.time) ? 1 : -1
     })
     sortedStock.title = "Consumer Price Index [CUUR0000SA0]"
+    return sortedStock
+  }
+
+  async fetchStockData(ticker: string): Promise<Stock[]> {
+    const msftData = await alpha.data.monthly(ticker);
+    const stockFormat: Stock[] = Object.entries(msftData["Monthly Time Series"]).map((
+      value
+    ) => {
+      const date = new Date(value[0] as string)
+      const prices = value[1] as any;
+      const open: number = Number.parseFloat(prices['1. open'])
+      const high: number = Number.parseFloat(prices['2. high'])
+      const low: number = Number.parseFloat(prices['3. low'])
+      const close: number = Number.parseFloat(prices['4. close'])
+      const volume: number = Number.parseFloat(prices['5. volume'])
+      return {
+        time: date,
+        open,
+        high,
+        low,
+        close,
+        volume
+      }
+    })
+    const sortedStock = stockFormat.sort((a: Stock, b: Stock) => {
+      return (a.time > b.time) ? 1 : -1
+    })
+    // @ts-ignore
+    sortedStock.title = ticker
     return sortedStock
   }
 }
