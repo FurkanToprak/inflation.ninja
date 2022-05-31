@@ -38,7 +38,7 @@ function padData(stocks: Stock[][]) {
 @Component({
   selector: 'app-stock-graph',
   templateUrl: './stock-graph.component.html',
-  styleUrls: ['./stock-graph.component.scss']
+  styleUrls: ['./stock-graph.component.sass']
 })
 export class StockGraphComponent implements OnInit {
   public data: Stock[][] = [];
@@ -56,6 +56,12 @@ export class StockGraphComponent implements OnInit {
       this.data = padData([...this.data, value])
     })
     this.fetchStockData('MCD').then((value) => {
+      this.data = padData([...this.data, value])
+    })
+  }
+
+  addStock(stock_ticker: string) {
+    this.fetchStockData(stock_ticker).then((value) => {
       this.data = padData([...this.data, value])
     })
   }
