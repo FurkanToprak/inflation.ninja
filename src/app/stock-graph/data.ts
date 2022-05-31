@@ -1,3 +1,28 @@
+const currentTime = new Date()
+const currentYear = currentTime.getFullYear()
+require('dotenv').config()
+
+const apiKey = process.env.USBLS_API_KEY;
+
+export async function fetchConsumerPriceIndex() {
+  const headers = {
+    'Content-type': 'application/json'
+  }
+  const data = {
+    seriesid: ["CUUR0000SA0"],
+    startyear: 2000,
+    endyear: currentYear
+  }
+  const retData = await fetch('https://api.bls.gov/publicAPI/v2/timeseries/data/', {
+    method: 'POST',
+    mode: 'cors',
+    headers,
+    body: JSON.stringify(data)
+  });
+  console.log(retData)
+  return 0;
+}
+fetchConsumerPriceIndex()
 export interface Stock {
   time: Date;
   open: number;
