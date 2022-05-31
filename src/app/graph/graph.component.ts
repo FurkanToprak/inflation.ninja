@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { 
+	IgxFinancialChartModule,
+	IgxLegendModule
+ } from "igniteui-angular-charts";
 
 @Component({
   selector: 'app-graph',

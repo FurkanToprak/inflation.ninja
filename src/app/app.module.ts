@@ -5,16 +5,20 @@ import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GraphComponent } from './graph/graph.component';
+import { StockGraphComponent } from "./stock-graph/stock-graph.component";
+import { IgxFinancialChartModule } from "igniteui-angular-charts";
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		ToolbarComponent,
-		GraphComponent
+		GraphComponent,
+		StockGraphComponent
 	],
 	imports: [
 		BrowserModule,
-		BrowserAnimationsModule
+		BrowserAnimationsModule,
+		IgxFinancialChartModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]
