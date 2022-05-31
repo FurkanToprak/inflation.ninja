@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { normalize } from 'path';
-import { AMZNData, makeRequest, Stock } from './data';
+import { makeRequest, Stock } from './data';
 
 function getMonthFromString(month: string) {
   return new Date(Date.parse(month + " 1, 2012")).getMonth()
@@ -37,14 +36,7 @@ export class StockGraphComponent implements OnInit {
     const sortedStock = stockFormat.sort((a: Stock, b: Stock) => {
       return a.time > b.time
     })
-    const firstValue: number = sortedStock[0].open;
-    const normalizedStock: Stock[] = sortedStock.map((notNormalized: Stock) => {
-      const normalized = notNormalized;
-      normalized.low = 100 * normalized.low / firstValue
-      normalized.high = 100 * normalized.high / firstValue
-      normalized.open = 100 * normalized.open / firstValue
-      return normalized
-    })
-    return normalizedStock
+    sortedStock.title = "Consumer Price Index [CUUR0000SA0]"
+    return sortedStock
   }
 }
