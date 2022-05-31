@@ -6,44 +6,31 @@ export interface Stock {
   close: number;
   volume: number;
 }
-const currentTime = new Date()
-const currentYear = currentTime.getFullYear()
 
-export const dataCPI: Stock[] = []
-
-function getMonthFromString(month: string){
-  return new Date(Date.parse(month +" 1, 2012")).getMonth()
+export function makeRequest(method: string, url: string): Promise<any> {
+  return new Promise(function (resolve, reject) {
+      let xhr = new XMLHttpRequest();
+      xhr.open(method, url);
+      xhr.onload = function () {
+          if (this.status >= 200 && this.status < 300) {
+              resolve(xhr.response);
+          } else {
+              reject({
+                  status: this.status,
+                  statusText: xhr.statusText
+              });
+          }
+      };
+      xhr.onerror = function () {
+          reject({
+              status: this.status,
+              statusText: xhr.statusText
+          });
+      };
+      xhr.send();
+  });
 }
 
-function responseReceivedHandler() {
-  // @ts-ignore
-  if (this.status == 200) {
-    // @ts-ignore
-    let data = this.response.Results.series[0].data;
-
-    for (let i = 0; i < data.length; i++) {
-      const { value, year, periodName } = data[i]
-      console.log(data[i])
-      const date = new Date(year, getMonthFromString(periodName), 1)
-      const price: number = Number.parseFloat(value)
-      const asStock = { time: date, open: price, high: price, low: price, close: price, volume: 1 }
-      dataCPI.push(asStock)
-    }
-  }
-  console.log('updated')
-  console.log(dataCPI)
-}
-
-export async function fetchConsumerPriceIndex() {
-  const apiKey = '6f5062dafec142749a92391e389490a5'
-  let xhr = new XMLHttpRequest();
-  xhr.responseType = "json";
-  xhr.addEventListener("load", responseReceivedHandler);
-  xhr.open("GET", "https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0?registrationkey=" + apiKey);
-  xhr.send();
-}
-
-fetchConsumerPriceIndex()
 
 export const AMZNData: Stock[] = [
   { time: new Date(2013, 1, 1), open: 268.93, high: 268.93, low: 262.80, close: 265.00, volume: 6118146 },
