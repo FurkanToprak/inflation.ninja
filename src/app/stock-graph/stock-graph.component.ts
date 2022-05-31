@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { AMZNData, Stock } from './data';
+import { AMZNData, dataCPI, Stock } from './data';
 
+console.log(dataCPI)
 @Component({
   selector: 'app-stock-graph',
   templateUrl: './stock-graph.component.html',
