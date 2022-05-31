@@ -55,16 +55,7 @@ export class StockGraphComponent implements OnInit {
     this.fetchStockData('BRK.A').then((value) => {
       this.data = padData([...this.data, value])
     })
-    this.fetchStockData('AMD').then((value) => {
-      this.data = padData([...this.data, value])
-    })
-    this.fetchStockData('NVDA').then((value) => {
-      this.data = padData([...this.data, value])
-    })
     this.fetchStockData('MCD').then((value) => {
-      this.data = padData([...this.data, value])
-    })
-    this.fetchStockData('BAC').then((value) => {
       this.data = padData([...this.data, value])
     })
   }
@@ -115,6 +106,8 @@ export class StockGraphComponent implements OnInit {
     })
     // @ts-ignore
     sortedStock.title = ticker
+    // @ts-ignore
+    sortedStock.color = "#000"
     return sortedStock
   }
 }
