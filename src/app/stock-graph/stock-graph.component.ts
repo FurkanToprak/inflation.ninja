@@ -49,15 +49,6 @@ export class StockGraphComponent implements OnInit {
     this.fetchConsumerPriceIndex().then((value) => {
       this.data = padData([...this.data, value])
     })
-    this.fetchStockData('MSFT').then((value) => {
-      this.data = padData([...this.data, value])
-    })
-    this.fetchStockData('BRK.A').then((value) => {
-      this.data = padData([...this.data, value])
-    })
-    this.fetchStockData('MCD').then((value) => {
-      this.data = padData([...this.data, value])
-    })
   }
 
   addStock(stock_ticker: string) {
@@ -67,7 +58,15 @@ export class StockGraphComponent implements OnInit {
   }
 
   addBestStocks() {
-    
+    this.fetchStockData('AMZN').then((value) => {
+      this.data = padData([...this.data, value])
+    })
+    this.fetchStockData('BRK.A').then((value) => {
+      this.data = padData([...this.data, value])
+    })
+    this.fetchStockData('MCD').then((value) => {
+      this.data = padData([...this.data, value])
+    })
   }
 
   async fetchConsumerPriceIndex(): Promise<Stock[]> {
