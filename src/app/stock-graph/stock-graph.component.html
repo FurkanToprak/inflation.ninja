@@ -1,6 +1,9 @@
 <div class='add-row'>
-    <input class='stock-input' type="text" id='stockticker' #stockticker/>
-    <button class='stock-button' (click)="addStock(stockticker.value)">Add a stock (ex: MSFT)</button>
+    <div class='button-row'>
+        <input class='stock-input' type="text" id='stockticker' #stockticker />
+        <button class='stock-button' (click)="addStock(stockticker.value)">Add a stock (ex: MSFT)</button>
+    </div>
+    <button class='best-button' (click)="addBestStocks()">View best performing stocks</button>
 </div>
 <igx-financial-chart chartType='line' yAxisMode="PercentChange" yAxisTitle="Percent Changed" [dataSource]="data"
     height="90%" width="100%" thickness=3>

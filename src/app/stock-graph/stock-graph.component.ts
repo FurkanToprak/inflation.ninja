@@ -66,6 +66,10 @@ export class StockGraphComponent implements OnInit {
     })
   }
 
+  addBestStocks() {
+    
+  }
+
   async fetchConsumerPriceIndex(): Promise<Stock[]> {
     const apiKey = '6f5062dafec142749a92391e389490a5'
     const thisYear = new Date().getFullYear()
