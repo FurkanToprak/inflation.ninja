@@ -1,5 +1,6 @@
 <div class="toolbar" role="banner">
-    <img class='ninja-icon' src='assets/ninja-dark.png' />
+  <div class="toolbar-content">
+    <span></span>
     <div class="toolbar-title">
       <h3>
         inflation.ninja
@@ -7,9 +8,22 @@
       <b>
         Helping you invest in stocks that have historically beat inflation!
       </b>
-      <h6>
-        <a href='https://www.paypal.com/paypalme/FurkanToprak'>Will this info make you richer? Please donate $1.</a>
-      </h6>
     </div>
     <img class='ninja-icon' src='assets/ninja-dark.png' />
+  </div>
+  <div class="toolbar-button-row">
+    <button class="toolbar-button" (click)="goHome()">
+      <h6>Home</h6>
+    </button>
+    <button class="toolbar-button" (click)="goAbout()">
+      <h6>
+        Learn About Inflation
+      </h6>
+    </button>
+    <button class="toolbar-button" (click)="goDonate()">
+      <h6>
+        Support This Website
+      </h6>
+    </button>
+  </div>
 </div>

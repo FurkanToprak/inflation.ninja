@@ -4,7 +4,11 @@
     width: 100%
 
 .toolbar
-    border-bottom: 4px solid $dark-dollar
+    width: 100%
+    display: flex
+    flex-direction: column
+
+.toolbar-content
     display: flex
     align-items: center
     justify-content: space-between
@@ -16,3 +20,18 @@
     flex-direction: column
     align-items: center
     justify-content: space-between
+
+.toolbar-button-row
+    display: flex
+    flex-direction: row
+    width: 100%
+    margin-top: 10
+    margin-bottom: 10
+
+.toolbar-button
+    flex: 1
+    border: 2px solid $light-dollar
+    background-color: $dark-dollar
+    color: $light-dollar
+    border-radius: 10px
+    height: 30px
