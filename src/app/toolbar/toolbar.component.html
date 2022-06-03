@@ -1,17 +1,26 @@
 <div class="toolbar" role="banner">
   <img class='ninja-icon' src='assets/ninja-dark.png' />
-  <div class="toolbar-title">
-    <h3>
-      inflation.ninja
-    </h3>
-    <b>
-      Helping you invest in stocks that have historically beat inflation!
-    </b>
-    <button class="donate-button" type="button" onclick="location.href='https://www.paypal.com/paypalme/FurkanToprak';">
+  <div class="toolbar-content">
+    <div class="toolbar-title">
+      <span class="title-text">
+        inflation.ninja
+      </span>
+      Find stocks that have historically beat inflation!
+    </div>
+  </div>
+  <div class="toolbar-button-row">
+    <button class="toolbar-button" (click)="goHome()">
+      <h6>Home</h6>
+    </button>
+    <button class="toolbar-button" (click)="goLearn()">
+      <h6>
+        Learn About Inflation
+      </h6>
+    </button>
+    <button class="toolbar-button" (click)="goDonate()">
       <h6>
         Support This Website
       </h6>
     </button>
   </div>
-  <img class='ninja-icon' src='assets/ninja-dark.png' />
 </div>

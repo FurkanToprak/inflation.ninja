@@ -11,5 +11,15 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  goHome(): void {
+    window.location.href = "/"
+  }
 
+  goLearn(): void {
+    window.location.href = "/learn"
+  }
+
+  goDonate(): void {
+    window.location.href = "https://www.paypal.com/paypalme/FurkanToprak"
+  }
 }
