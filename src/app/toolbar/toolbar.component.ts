@@ -15,8 +15,8 @@ export class ToolbarComponent implements OnInit {
     window.location.href = "/"
   }
 
-  goAbout(): void {
-    window.location.href = "/about"
+  goLearn(): void {
+    window.location.href = "/learn"
   }
 
   goDonate(): void {
