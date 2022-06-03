@@ -8,6 +8,7 @@ import { GraphComponent } from './graph/graph.component';
 import { StockGraphComponent } from "./stock-graph/stock-graph.component";
 import { IgxFinancialChartModule } from "igniteui-angular-charts";
 import { FooterComponent } from './footer/footer.component';
+import { LearnComponent } from './learn/learn.component';
 
 @NgModule({
 	declarations: [
@@ -15,7 +16,8 @@ import { FooterComponent } from './footer/footer.component';
 		ToolbarComponent,
 		GraphComponent,
 		StockGraphComponent,
-  FooterComponent
+  FooterComponent,
+  LearnComponent
 	],
 	imports: [
 		BrowserModule,
