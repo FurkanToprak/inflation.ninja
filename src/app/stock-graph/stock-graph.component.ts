@@ -90,33 +90,40 @@ export class StockGraphComponent implements OnInit {
   }
 
   async fetchStockData(ticker: string): Promise<Stock[]> {
-    const msftData = await alpha.data.monthly(ticker);
-    const stockFormat: Stock[] = Object.entries(msftData["Monthly Time Series"]).map((
-      value
-    ) => {
-      const date = new Date(value[0] as string)
-      const prices = value[1] as any;
-      const open: number = Number.parseFloat(prices['1. open'])
-      const high: number = Number.parseFloat(prices['2. high'])
-      const low: number = Number.parseFloat(prices['3. low'])
-      const close: number = Number.parseFloat(prices['4. close'])
-      const volume: number = Number.parseFloat(prices['5. volume'])
-      return {
-        time: date,
-        open,
-        high,
-        low,
-        close,
-        volume
-      }
-    })
-    const sortedStock = stockFormat.sort((a: Stock, b: Stock) => {
-      return (a.time > b.time) ? 1 : -1
-    })
-    // @ts-ignore
-    sortedStock.title = ticker
-    // @ts-ignore
-    sortedStock.color = "#000"
-    return sortedStock
+    const fetchedData = fetch(`http://inflation-ninja-backend.htvef4ep6odoq.us-west-2.cs.amazonlightsail.com/getStock?ticker=${ticker}`,
+      {
+        method: 'GET',
+        redirect: 'follow'
+      });
+    console.log(fetchedData);
+    return [];
+    // const msftData = await alpha.data.monthly(ticker);
+    // const stockFormat: Stock[] = Object.entries(msftData["Monthly Time Series"]).map((
+    //   value
+    // ) => {
+    //   const date = new Date(value[0] as string)
+    //   const prices = value[1] as any;
+    //   const open: number = Number.parseFloat(prices['1. open'])
+    //   const high: number = Number.parseFloat(prices['2. high'])
+    //   const low: number = Number.parseFloat(prices['3. low'])
+    //   const close: number = Number.parseFloat(prices['4. close'])
+    //   const volume: number = Number.parseFloat(prices['5. volume'])
+    //   return {
+    //     time: date,
+    //     open,
+    //     high,
+    //     low,
+    //     close,
+    //     volume
+    //   }
+    // })
+    // const sortedStock = stockFormat.sort((a: Stock, b: Stock) => {
+    //   return (a.time > b.time) ? 1 : -1
+    // })
+    // // @ts-ignore
+    // sortedStock.title = ticker
+    // // @ts-ignore
+    // sortedStock.color = "#000"
+    // return sortedStock
   }
 }
