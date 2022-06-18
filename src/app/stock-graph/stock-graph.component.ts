@@ -6,31 +6,35 @@ function getMonthFromString(month: string) {
   return new Date(Date.parse(month + " 1, 2012")).getMonth()
 }
 
-function padData(stocks: Stock[][]) {
-  let maxLength = 0;
-  let maxIndex = NaN;
+function getDaysInMonth(date: Date): number {
+  const currentYear = date.getFullYear();
+  const currentMonth = date.getMonth();
+  const daysInCurrentMonth = new Date(currentYear, currentMonth, 0).getDate();
+  return daysInCurrentMonth
+}
+
+function alignData(stocks: Stock[][]) {
+  if (stocks.length <= 1) {
+    return stocks;
+  }
+  let minLength = Number.POSITIVE_INFINITY;
+  let minIndex = NaN;
   for (let i = 0; i < stocks.length; ++i) {
-    if (maxLength < stocks[i].length) {
-      maxLength = Math.max(maxLength, stocks[i].length)
-      maxIndex = i;
+    if (minLength > stocks[i].length) {
+      minLength = Math.min(minLength, stocks[i].length)
+      minIndex = i;
     }
   }
   for (let i = 0; i < stocks.length; ++i) {
+    const thisStock = stocks[i];
+    const thisStockLength = thisStock.length;
     // @ts-ignore
-    const stockTitle = stocks[i].title
-    const remainingLength = maxLength - stocks[i].length;
-    const padValue = stocks[i][0]
-    const supplement: Stock[] = []
-    for (let i = 0; i < remainingLength; ++i) {
-      const subDate = stocks[maxIndex][i].time
-      const newPad = padValue;
-      newPad.time = subDate;
-      supplement.push(newPad)
-    }
-    const paddedArray = supplement.concat(stocks[i]);
+    const stockTitle = thisStock.title
+    const sliceStart = thisStockLength - minLength;
+    const shortenedArray = thisStock.slice(sliceStart)
     // @ts-ignore
-    paddedArray.title = stockTitle
-    stocks[i] = paddedArray
+    shortenedArray.title = stockTitle
+    stocks[i] = shortenedArray
   }
   return stocks
 }
@@ -47,25 +51,26 @@ export class StockGraphComponent implements OnInit {
 
   ngOnInit() {
     this.fetchConsumerPriceIndex().then((value) => {
-      this.data = padData([...this.data, value])
+      this.data = alignData([...this.data, value])
     })
   }
 
   addStock(stock_ticker: string) {
     this.fetchStockData(stock_ticker).then((value) => {
-      this.data = padData([...this.data, value])
+      this.data = alignData([...this.data, value])
     })
   }
 
   addBestStocks() {
     this.fetchStockData('AMZN').then((value) => {
-      this.data = padData([...this.data, value])
+      this.data = alignData([...this.data, value])
     })
-    this.fetchStockData('BRK.A').then((value) => {
-      this.data = padData([...this.data, value])
-    })
+    // this.fetchStockData('BRK.A').then((value) => {
+    //   console.log('BRK.A')
+    //   this.data = alignData([...this.data, value])
+    // })
     this.fetchStockData('MCD').then((value) => {
-      this.data = padData([...this.data, value])
+      this.data = alignData([...this.data, value])
     })
   }
 
@@ -94,15 +99,17 @@ export class StockGraphComponent implements OnInit {
       }
     })
     const sortedStock = stockData.sort((a: Stock, b: Stock) => {
-        return (a.time > b.time) ? 1 : -1
-      })
-      console.log(stockData);
-      // @ts-ignore
-      sortedStock.title = ticker
-      return sortedStock;
-    }
-    async fetchConsumerPriceIndex(): Promise<Stock[]> {
-      const fetchedData = await fetch(`https://inflation-ninja-backend.htvef4ep6odoq.us-west-2.cs.amazonlightsail.com/getStock?ticker=Inflation`,
+      return (a.time > b.time) ? 1 : -1
+    })
+    // console.log(stockData);
+    // @ts-ignore
+    sortedStock.title = ticker
+    console.log('SORTED STOCK $' + ticker)
+    console.log(sortedStock)
+    return sortedStock;
+  }
+  async fetchConsumerPriceIndex(): Promise<Stock[]> {
+    const fetchedData = await fetch(`https://inflation-ninja-backend.htvef4ep6odoq.us-west-2.cs.amazonlightsail.com/getStock?ticker=Inflation`,
       {
         method: 'GET',
         redirect: 'follow'
@@ -126,13 +133,22 @@ export class StockGraphComponent implements OnInit {
       }
     })
     const sortedStock = stockData.sort((a: Stock, b: Stock) => {
-        return (a.time > b.time) ? 1 : -1
-      })
-      console.log('sortedStock');
-      console.log(sortedStock);
-      // @ts-ignore
-      sortedStock.title = 'Inflation (CPI)'
-      return sortedStock;
-    }
-  
+      return (a.time > b.time) ? 1 : -1
+    })
+    const dailyResolution: Stock[] = []
+    sortedStock.forEach(
+      (sorted) => {
+        const daysToAdd = getDaysInMonth(sorted.time)
+        for(let i = 0; i < daysToAdd; ++i) {
+          dailyResolution.push(sorted)
+        }
+      }
+    )
+    // @ts-ignore
+    dailyResolution.title = 'Inflation (CPI)'
+    console.log("CPI")
+    console.log(dailyResolution)
+    return dailyResolution;
+  }
+
 }
