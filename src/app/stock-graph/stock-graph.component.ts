@@ -69,61 +69,70 @@ export class StockGraphComponent implements OnInit {
     })
   }
 
-  async fetchConsumerPriceIndex(): Promise<Stock[]> {
-    const apiKey = '6f5062dafec142749a92391e389490a5'
-    const thisYear = new Date().getFullYear()
-    const fetchedData: string = await makeRequest("GET", `https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0?startyear=2000&endyear=${thisYear}&registrationkey=${apiKey}`)
-    const parsedData = JSON.parse(fetchedData)
-    const cpiData = parsedData["Results"]["series"][0]['data']
-    const stockFormat = cpiData.map((datum: any) => {
-      const { value, year, periodName } = datum
-      const date = new Date(year, getMonthFromString(periodName), 1)
-      const price: number = Number.parseFloat(value)
-      const asStock = { time: date, open: price, high: price, low: price, close: price, volume: 1 }
-      return asStock
-    })
-    const sortedStock = stockFormat.sort((a: Stock, b: Stock) => {
-      return (a.time > b.time) ? 1 : -1
-    })
-    sortedStock.title = "Consumer Price Index [CUUR0000SA0]"
-    return sortedStock
-  }
-
   async fetchStockData(ticker: string): Promise<Stock[]> {
-    const fetchedData = fetch(`http://inflation-ninja-backend.htvef4ep6odoq.us-west-2.cs.amazonlightsail.com/getStock?ticker=${ticker}`,
+    const fetchedData = await fetch(`https://inflation-ninja-backend.htvef4ep6odoq.us-west-2.cs.amazonlightsail.com/getStock?ticker=${ticker}`,
       {
         method: 'GET',
         redirect: 'follow'
       });
-    console.log(fetchedData);
-    return [];
-    // const msftData = await alpha.data.monthly(ticker);
-    // const stockFormat: Stock[] = Object.entries(msftData["Monthly Time Series"]).map((
-    //   value
-    // ) => {
-    //   const date = new Date(value[0] as string)
-    //   const prices = value[1] as any;
-    //   const open: number = Number.parseFloat(prices['1. open'])
-    //   const high: number = Number.parseFloat(prices['2. high'])
-    //   const low: number = Number.parseFloat(prices['3. low'])
-    //   const close: number = Number.parseFloat(prices['4. close'])
-    //   const volume: number = Number.parseFloat(prices['5. volume'])
-    //   return {
-    //     time: date,
-    //     open,
-    //     high,
-    //     low,
-    //     close,
-    //     volume
-    //   }
-    // })
-    // const sortedStock = stockFormat.sort((a: Stock, b: Stock) => {
-    //   return (a.time > b.time) ? 1 : -1
-    // })
-    // // @ts-ignore
-    // sortedStock.title = ticker
-    // // @ts-ignore
-    // sortedStock.color = "#000"
-    // return sortedStock
-  }
+    const fetchedJson = await fetchedData.json()
+    const dates = Object.keys(fetchedJson)
+    const stockData = dates.map((date: string /** YYYY-MM-DD */) => {
+      const dateParse = date.split('-')
+      const year = Number.parseInt(dateParse[0]);
+      const month = Number.parseInt(dateParse[1]) - 1;
+      const day = Number.parseInt(dateParse[2]);
+      const formatDate = new Date(year, month, day);
+      const dayData = fetchedJson[date];
+      return {
+        time: formatDate,
+        open: dayData['open'],
+        close: dayData['close'],
+        low: dayData['low'],
+        high: dayData['high'],
+        volume: dayData['volume']
+      }
+    })
+    const sortedStock = stockData.sort((a: Stock, b: Stock) => {
+        return (a.time > b.time) ? 1 : -1
+      })
+      console.log(stockData);
+      // @ts-ignore
+      sortedStock.title = ticker
+      return sortedStock;
+    }
+    async fetchConsumerPriceIndex(): Promise<Stock[]> {
+      const fetchedData = await fetch(`https://inflation-ninja-backend.htvef4ep6odoq.us-west-2.cs.amazonlightsail.com/getStock?ticker=Inflation`,
+      {
+        method: 'GET',
+        redirect: 'follow'
+      });
+    const fetchedJson = await fetchedData.json()
+    const dates = Object.keys(fetchedJson)
+    const stockData = dates.map((date: string /** YYYY-MM-DD */) => {
+      const dayData = Number.parseFloat(fetchedJson[date]);
+      const dateParse = date.split('-')
+      const year = Number.parseInt(dateParse[0]);
+      const month = Number.parseInt(dateParse[1]) - 1;
+      const day = Number.parseInt(dateParse[2]);
+      const formatDate = new Date(year, month, day);
+      return {
+        time: formatDate,
+        open: dayData,
+        close: dayData,
+        low: dayData,
+        high: dayData,
+        volume: 1
+      }
+    })
+    const sortedStock = stockData.sort((a: Stock, b: Stock) => {
+        return (a.time > b.time) ? 1 : -1
+      })
+      console.log('sortedStock');
+      console.log(sortedStock);
+      // @ts-ignore
+      sortedStock.title = 'Inflation (CPI)'
+      return sortedStock;
+    }
+  
 }
