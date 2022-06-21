@@ -22,4 +22,8 @@ export class ToolbarComponent implements OnInit {
   goDonate(): void {
     window.location.href = "https://www.paypal.com/paypalme/FurkanToprak"
   }
+
+  goDeveloper(): void {
+    window.location.href = "https://www.furkantoprak.com"
+  }
 }
