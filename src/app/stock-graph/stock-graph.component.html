@@ -4,6 +4,7 @@
         <button class='stock-button' (click)="addStock(stockticker.value)">Add a stock (ex: MSFT)</button>
     </div>
 </div>
+<div>This chart indicates how a stock/inflation grows over time, relative to itself. To view labels on mobile, hold down on the chart.</div>
 <igx-financial-chart chartType='line' yAxisMode="PercentChange" yAxisTitle="Percent Changed" [dataSource]="data"
     height="90%" width="100%" thickness=3 toolTipType="Item">
 </igx-financial-chart>
