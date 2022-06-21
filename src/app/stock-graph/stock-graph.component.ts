@@ -46,6 +46,7 @@ function alignData(stocks: Stock[][]) {
 })
 export class StockGraphComponent implements OnInit {
   public data: Stock[][] = [];
+  public loading: boolean = false;
   constructor() {
   }
 
@@ -56,21 +57,10 @@ export class StockGraphComponent implements OnInit {
   }
 
   addStock(stock_ticker: string) {
+    this.loading = true;
     this.fetchStockData(stock_ticker).then((value) => {
       this.data = alignData([...this.data, value])
-    })
-  }
-
-  addBestStocks() {
-    this.fetchStockData('AMZN').then((value) => {
-      this.data = alignData([...this.data, value])
-    })
-    // this.fetchStockData('BRK.A').then((value) => {
-    //   console.log('BRK.A')
-    //   this.data = alignData([...this.data, value])
-    // })
-    this.fetchStockData('MCD').then((value) => {
-      this.data = alignData([...this.data, value])
+      this.loading = false;
     })
   }
 
@@ -101,7 +91,6 @@ export class StockGraphComponent implements OnInit {
     const sortedStock = stockData.sort((a: Stock, b: Stock) => {
       return (a.time > b.time) ? 1 : -1
     })
-    // console.log(stockData);
     // @ts-ignore
     sortedStock.title = ticker
     console.log('SORTED STOCK $' + ticker)
