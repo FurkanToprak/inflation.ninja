@@ -13,11 +13,11 @@ import { NgxLoadingModule } from 'ngx-loading';
 
 const routes: Routes = [
 	{
-		path: '',
+		path: 'stocks',
 		component: GraphComponent
 	},
 	{
-		path: 'learn',
+		path: '',
 		component: LearnComponent
 	}
 ]

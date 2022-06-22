@@ -12,4 +12,8 @@ export class LearnComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  goStocks(): void {
+    window.location.href = "/stocks"
+  }
+
 }
