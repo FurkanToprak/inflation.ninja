@@ -12,4 +12,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  goLearn(): void {
+    window.location.href = '/learn'
+  }
 }

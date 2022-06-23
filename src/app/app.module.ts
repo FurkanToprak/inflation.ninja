@@ -10,15 +10,16 @@ import { StockGraphComponent } from "./stock-graph/stock-graph.component";
 import { IgxFinancialChartModule } from "igniteui-angular-charts";
 import { HomeComponent } from './home/home.component';
 import { NgxLoadingModule } from 'ngx-loading';
+import { LearnComponent } from './learn/learn.component';
 
 const routes: Routes = [
 	{
-		path: '',
-		component: HomeComponent
+		path: 'learn',
+		component: LearnComponent
 	},
 	{
-		path: 'compare',
-		component: GraphComponent
+		path: '',
+			component: HomeComponent
 	}
 ]
 @NgModule({
@@ -27,7 +28,8 @@ const routes: Routes = [
 		ToolbarComponent,
 		GraphComponent,
 		StockGraphComponent,
-		HomeComponent
+		HomeComponent,
+  LearnComponent
 	],
 	imports: [
 		RouterModule.forRoot(routes),
