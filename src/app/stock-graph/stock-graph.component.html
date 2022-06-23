@@ -1,12 +1,12 @@
+<div>This chart indicates how a stock/inflation grows over time, relative to itself. To view labels on mobile, hold down on the chart.</div>
 <div class='add-row'>
     <div class='button-row'>
         <input class='stock-input' type="text" id='stockticker' #stockticker />
         <button class='stock-button' (click)="addStock(stockticker.value)">Add stock</button>
     </div>
 </div>
-<div>This chart indicates how a stock/inflation grows over time, relative to itself. To view labels on mobile, hold down on the chart.</div>
 <igx-financial-chart chartType='line' yAxisMode="PercentChange" isToolbarVisible="false" yAxisTitle="Percent Changed" [dataSource]="data"
-    height="90%" width="80%" thickness=3 toolTipType="Item">
+    height="90%" width="100%" thickness=3 border="2px solid #000" toolTipType="Item">
 </igx-financial-chart>
 <ngx-loading [show]="loading">
 </ngx-loading>
