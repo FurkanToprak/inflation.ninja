@@ -8,17 +8,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GraphComponent } from './graph/graph.component';
 import { StockGraphComponent } from "./stock-graph/stock-graph.component";
 import { IgxFinancialChartModule } from "igniteui-angular-charts";
-import { LearnComponent } from './learn/learn.component';
+import { HomeComponent } from './home/home.component';
 import { NgxLoadingModule } from 'ngx-loading';
 
 const routes: Routes = [
 	{
 		path: '',
-		component: GraphComponent
+		component: HomeComponent
 	},
 	{
-		path: 'learn',
-		component: LearnComponent
+		path: 'compare',
+		component: GraphComponent
 	}
 ]
 @NgModule({
@@ -27,7 +27,7 @@ const routes: Routes = [
 		ToolbarComponent,
 		GraphComponent,
 		StockGraphComponent,
-		LearnComponent
+		HomeComponent
 	],
 	imports: [
 		RouterModule.forRoot(routes),
