@@ -12,6 +12,7 @@ import {HomeComponent} from './home/home.component';
 import {NgxLoadingModule} from 'ngx-loading';
 import {LearnComponent} from './learn/learn.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 const routes: Routes = [
   {
@@ -39,7 +40,7 @@ const routes: Routes = [
     IgxFinancialChartModule,
     NgxLoadingModule.forRoot({}),
     MatTabsModule,
-
+    MatSnackBarModule,
   ],
   exports: [RouterModule],
   providers: [],
