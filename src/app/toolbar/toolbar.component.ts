@@ -1,29 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+/* eslint-disable require-jsdoc */
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.sass']
+  styleUrls: ['./toolbar.component.sass'],
 })
 export class ToolbarComponent implements OnInit {
-
-  constructor() { }
+  navLinks: any[];
+  activeLinkIndex = -1;
+  constructor(private router: Router) {
+    this.navLinks = [
+      {
+        label: 'Home',
+        link: '/',
+        index: 0,
+      }, {
+        label: 'Learn',
+        link: '/learn',
+        index: 1,
+      },
+    ];
+  }
 
   ngOnInit(): void {
-  }
-  goHome(): void {
-    window.location.href = "/"
-  }
-
-  goLearn(): void {
-    window.location.href = "/learn"
-  }
-
-  goDonate(): void {
-    window.location.href = "https://www.paypal.com/paypalme/FurkanToprak"
-  }
-
-  goDeveloper(): void {
-    window.location.href = "https://www.furkantoprak.com"
+    this.router.events.subscribe((res) => {
+      this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find((tab) => {
+        return tab.link === this.router.url;
+      },
+      ));
+      console.log(`Change: ${this.activeLinkIndex}`);
+    });
   }
 }

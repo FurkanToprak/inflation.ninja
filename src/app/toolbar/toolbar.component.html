@@ -8,24 +8,16 @@
       Find stocks that have historically beat inflation! Learn about inflation!
     </div>
   </div>
-  <div class="toolbar-button-row">
-    <button class="toolbar-button" (click)="goHome()">
-      <h6>Home</h6>
-    </button>
-    <button class="toolbar-button" (click)="goLearn()">
-      <h6>
-        Learn
-      </h6>
-    </button>
-    <button class="toolbar-button" (click)="goDeveloper()">
-      <h6>
-        Author
-      </h6>
-    </button>
-    <button class="toolbar-button" (click)="goDonate()">
-      <h6>
-        Support
-      </h6>
-    </button>
-  </div>
+  <nav mat-tab-nav-bar>
+    <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive"
+      [routerLinkActiveOptions]="{ exact: true }" [active]="rla.isActive">
+      {{link.label}}
+    </a>
+  </nav>
+  <!-- <nav mat-tab-nav-bar>
+    <a mat-tab-link href="/">Home</a>
+    <a mat-tab-link href="/learn">Learn</a>
+    <a mat-tab-link href="https://www.furkantoprak.com">Author</a>
+    <a mat-tab-link href="https://www.paypal.com/paypalme/FurkanToprak">Support</a>
+  </nav> -->
 </div>
