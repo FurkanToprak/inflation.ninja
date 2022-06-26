@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
 
 export interface Stock {
   position: number;
@@ -14,9 +16,14 @@ export interface Stock {
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.sass'],
 })
-export class ChartComponent implements OnInit {
-  displayedColumns: string[] = [];
-  dataSource: Stock[] = [];
+/**
+ * Chart component
+ */
+export class ChartComponent implements OnInit, AfterViewInit {
+  displayedColumns: string[];
+  dataSource: MatTableDataSource<Stock>;
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
+
   constructor() {
     this.displayedColumns = [
       'position',
@@ -25,9 +32,55 @@ export class ChartComponent implements OnInit {
       'price',
       'return',
     ];
-    this.dataSource = [];
+    this.dataSource = new MatTableDataSource<Stock>([
+      {
+        position: 0,
+        name: 'string',
+        symbol: 'string',
+        return: 0,
+        volume: 0,
+      },
+      {
+        position: 0,
+        name: 'string',
+        symbol: 'string',
+        return: 0,
+        volume: 0,
+      },
+      {
+        position: 0,
+        name: 'string',
+        symbol: 'string',
+        return: 0,
+        volume: 0,
+      },
+      {
+        position: 0,
+        name: 'string',
+        symbol: 'string',
+        return: 0,
+        volume: 0,
+      },
+      {
+        position: 0,
+        name: 'string',
+        symbol: 'string',
+        return: 0,
+        volume: 0,
+      },
+      {
+        position: 0,
+        name: 'string',
+        symbol: 'string',
+        return: 0,
+        volume: 0,
+      },
+    ]);
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
   ngOnInit(): void {
   }
 }

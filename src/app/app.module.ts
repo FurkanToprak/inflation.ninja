@@ -14,6 +14,7 @@ import {LearnComponent} from './learn/learn.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {ChartComponent} from './chart/chart.component';
 
 const routes: Routes = [
@@ -45,6 +46,7 @@ const routes: Routes = [
     MatTabsModule,
     MatSnackBarModule,
     MatTableModule,
+    MatPaginatorModule,
   ],
   exports: [RouterModule],
   providers: [],
