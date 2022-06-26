@@ -13,6 +13,8 @@ import {NgxLoadingModule} from 'ngx-loading';
 import {LearnComponent} from './learn/learn.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table';
+import {ChartComponent} from './chart/chart.component';
 
 const routes: Routes = [
   {
@@ -32,6 +34,7 @@ const routes: Routes = [
     StockGraphComponent,
     HomeComponent,
     LearnComponent,
+    ChartComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -41,6 +44,7 @@ const routes: Routes = [
     NgxLoadingModule.forRoot({}),
     MatTabsModule,
     MatSnackBarModule,
+    MatTableModule,
   ],
   exports: [RouterModule],
   providers: [],
