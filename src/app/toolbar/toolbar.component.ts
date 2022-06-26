@@ -13,7 +13,7 @@ export class ToolbarComponent implements OnInit {
   constructor(private router: Router) {
     this.navLinks = [
       {
-        label: 'Home',
+        label: 'Stocks',
         link: '/',
         index: 0,
       }, {
@@ -30,7 +30,6 @@ export class ToolbarComponent implements OnInit {
         return tab.link === this.router.url;
       },
       ));
-      console.log(`Change: ${this.activeLinkIndex}`);
     });
   }
 }
